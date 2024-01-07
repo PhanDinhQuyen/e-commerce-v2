@@ -1,7 +1,7 @@
 const { ReasonPhrases, StatusCodes } = require("http-status-codes");
 
 /**
- * Custom error class representing a generic error response.
+ * Custom error class representing a generic error response
  *
  * @class ErrorResponse
  * @extends {Error}
