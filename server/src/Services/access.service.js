@@ -11,7 +11,7 @@ const { selectDataIntoObject } = require("../Utils");
 /**
  * Service class for user-related operations.
  */
-class UserService {
+class AccessService {
   /**
    * Selectable data fields for user information.
    * @type {string[]}
@@ -133,4 +133,4 @@ class UserService {
   };
 }
 
-module.exports = UserService;
+module.exports = AccessService;

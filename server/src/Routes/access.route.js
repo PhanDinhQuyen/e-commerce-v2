@@ -1,6 +1,6 @@
 const route = require("express").Router();
 
-const UserController = require("../Controllers/user.controller");
+const AccessController = require("../Controllers/access.controller");
 const Auth = require("../Auth/verify.auth");
 const {
   validateSignInData,
@@ -11,22 +11,22 @@ const { handlerCatchError } = require("../Utils");
 route.post(
   "/signup",
   handlerCatchError(validateSignUpData),
-  handlerCatchError(UserController.signUp)
+  handlerCatchError(AccessController.signUp)
 );
 route.post(
   "/signin",
   handlerCatchError(validateSignInData),
-  handlerCatchError(UserController.signIn)
+  handlerCatchError(AccessController.signIn)
 );
 route.post(
   "/refreshtoken",
   handlerCatchError(Auth.verifyClientId),
-  handlerCatchError(UserController.handleRefreshToken)
+  handlerCatchError(AccessController.handleRefreshToken)
 );
 route.post(
   "/logout",
   handlerCatchError(Auth.verifyAccessToken),
-  handlerCatchError(UserController.logOut)
+  handlerCatchError(AccessController.logOut)
 );
 
 module.exports = route;

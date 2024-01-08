@@ -39,7 +39,7 @@ app.get("/", (_, res) =>
     message: "Reply form server",
   })
 );
-app.use("/v1/api/account", require("./Routes/auth.route"));
+app.use("/v1/api/account", require("./Routes/access.route"));
 
 //Error handler
 app.use((req, res, next) => {
