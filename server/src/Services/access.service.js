@@ -42,8 +42,7 @@ class AccessService {
       email,
       password: passwordHash,
     });
-
-    return selectDataIntoObject(this.selectData, user);
+    return selectDataIntoObject(this.selectData, user.toObject());
   };
 
   /**

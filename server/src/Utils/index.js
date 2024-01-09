@@ -34,11 +34,19 @@ const isObjectId = (id) => {
  */
 const selectDataIntoObject = (array, object) => {
   const data = {};
+  console.log("Object:", object);
+
   for (const value of array) {
-    if (object.hasOwnProperty(value) && !!object[value]) {
+    console.log("Property:", value);
+    console.log("Has Property:", object.hasOwnProperty(value));
+    console.log("Property Value:", object[value]);
+
+    if (Object.prototype.hasOwnProperty.call(object, value)) {
       data[value] = object[value];
     }
   }
+
+  console.log("Final Data:", data);
   return data;
 };
 
