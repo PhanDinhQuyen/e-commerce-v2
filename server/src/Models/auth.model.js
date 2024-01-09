@@ -28,14 +28,12 @@ const authSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: 8,
-      maxlength: 30,
       required: true,
     },
     role: {
       type: String,
       default: "user",
-      enum: ["master", "admin", "user"],
+      enum: ["admin", "mod", "shop", "user"],
     },
     verify: {
       type: Boolean,

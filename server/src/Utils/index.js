@@ -35,7 +35,7 @@ const isObjectId = (id) => {
 const selectDataIntoObject = (array, object) => {
   const data = {};
   for (const value of array) {
-    if (object.hasOwnProperty(value) && object[value]) {
+    if (object.hasOwnProperty(value) && !!object[value]) {
       data[value] = object[value];
     }
   }

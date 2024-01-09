@@ -3,8 +3,8 @@ const {
   BadRequestError,
 } = require("../Handlers/error.handler");
 
-const authModel = require("../Models/auth.model");
-const tokenModel = require("../Models/token.model");
+const AuthModel = require("../Models/auth.model");
+const TokenModel = require("../Models/token.model");
 const TokenService = require("../Services/token.service");
 const { isObjectId } = require("../Utils");
 
@@ -25,7 +25,7 @@ class Auth {
    * @throws {UnAuthorizedError} - If the client ID is not valid.
    */
   static checkClientId = async (clientId) => {
-    const client = await authModel.findById(isObjectId(clientId)).lean();
+    const client = await AuthModel.findById(isObjectId(clientId)).lean();
     if (!client) {
       throw new UnAuthorizedError();
     }
@@ -75,7 +75,7 @@ class Auth {
     }
 
     const client = await this.checkClientId(clientId);
-    const token = await tokenModel.findOne({ auth: clientId }).lean();
+    const token = await TokenModel.findOne({ auth: clientId }).lean();
 
     if (!token) {
       throw new UnAuthorizedError();

@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
-const tokenModel = require("../Models/token.model");
+const TokenModel = require("../Models/token.model");
 const { BadRequestError } = require("../Handlers/error.handler");
 
 /**
@@ -65,7 +65,7 @@ class TokenService {
     const updates = { privateKey, publicKey };
     const options = { new: true, upsert: true };
 
-    await tokenModel.findOneAndUpdate(query, updates, options);
+    await TokenModel.findOneAndUpdate(query, updates, options);
 
     return { accessToken, refreshToken };
   };
@@ -77,7 +77,7 @@ class TokenService {
    * @returns {Object} - The updated token document.
    */
   static addRefreshTokenUsed = async (auth, refreshToken) =>
-    tokenModel.findOneAndUpdate(
+    TokenModel.findOneAndUpdate(
       { auth },
       { $addToSet: { refreshTokensUsed: refreshToken } },
       { new: true }
@@ -89,7 +89,7 @@ class TokenService {
    * @returns {boolean} - True if the token is successfully removed.
    */
   static removeToken = async (auth) => {
-    await tokenModel.findOneAndDelete({ auth });
+    await TokenModel.findOneAndDelete({ auth });
     return true;
   };
 }

@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
-const authModel = require("../Models/auth.model");
+const AuthModel = require("../Models/auth.model");
+const TokenModel = require("../Models/token.model");
 const {
   BadRequestError,
   UnAuthorizedError,
 } = require("../Handlers/error.handler");
 const TokenService = require("./token.service");
-const tokenModel = require("../Models/token.model");
 const { selectDataIntoObject } = require("../Utils");
 
 /**
@@ -28,7 +28,7 @@ class AccessService {
    * @throws {BadRequestError} - If the email already exists.
    */
   static signUp = async ({ name, email, password }) => {
-    const existingUser = await authModel.findOne({ email });
+    const existingUser = await AuthModel.findOne({ email });
 
     if (existingUser) {
       throw new BadRequestError("Email already exists");
@@ -37,7 +37,7 @@ class AccessService {
     const saltRound = 10;
     const passwordHash = await bcrypt.hash(password, saltRound);
 
-    const user = await authModel.create({
+    const user = await AuthModel.create({
       name,
       email,
       password: passwordHash,
@@ -55,7 +55,7 @@ class AccessService {
    * @throws {BadRequestError} - If the email is not found or the password is invalid.
    */
   static signIn = async ({ email, password }) => {
-    const user = await authModel.findOne({ email }).lean();
+    const user = await AuthModel.findOne({ email }).lean();
 
     if (!user) {
       throw new BadRequestError("Email not found");
@@ -92,16 +92,16 @@ class AccessService {
    * @throws {BadRequestError} - If the token is not found.
    */
   static handleRefreshToken = async ({ refreshToken, auth, role }) => {
-    const tokenInUse = await tokenModel
-      .findOne({ refreshTokensUsed: refreshToken })
-      .lean();
+    const tokenInUse = await TokenModel.findOne({
+      refreshTokensUsed: refreshToken,
+    }).lean();
 
     if (tokenInUse) {
       await TokenService.removeToken(tokenInUse.auth);
       throw new UnAuthorizedError();
     }
 
-    const token = await tokenModel.findOne({ auth }).lean();
+    const token = await TokenModel.findOne({ auth }).lean();
 
     if (!token) {
       throw new BadRequestError("Token not found");

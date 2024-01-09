@@ -40,6 +40,7 @@ app.get("/", (_, res) =>
   })
 );
 app.use("/v1/api/account", require("./Routes/access.route"));
+app.use("/v1/api/product", require("./Routes/product.route"));
 
 //Error handler
 app.use((req, res, next) => {

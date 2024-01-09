@@ -24,7 +24,7 @@ class BaseResponse {
     return res.status(this.statusCode).json({
       statusCode: this.statusCode,
       message: this.message,
-      data: this.data,
+      metaData: this.data,
     });
   }
 }
