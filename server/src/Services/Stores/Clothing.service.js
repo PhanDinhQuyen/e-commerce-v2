@@ -1,7 +1,8 @@
-const { BadRequestError } = require("../../Handlers/error.handler");
-const Product = require("../product.service");
 const { default: mongoose } = require("mongoose");
 const { ClothingModel } = require("../../Models/product.model");
+
+const { BadRequestError } = require("../../Handlers/error.handler");
+const Product = require("../product.service");
 
 /**
  * Class for creating clothing products.
