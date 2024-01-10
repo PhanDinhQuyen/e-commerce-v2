@@ -100,7 +100,7 @@ module.exports = Product; // Important line
 // Auto-register product types
 ProductService.autoRegisterProductTypes(
   path.join(__dirname, "./Stores"),
-  ".js"
+  ".service.js"
 );
 
 module.exports = ProductService;

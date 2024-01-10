@@ -52,7 +52,6 @@ class Auth {
     const client = await this.checkClientId(clientId);
     req.auth = clientId;
     req.refreshToken = refreshToken;
-    req.role = client.role;
 
     next();
   };
