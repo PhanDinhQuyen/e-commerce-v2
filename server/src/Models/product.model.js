@@ -10,10 +10,7 @@ const productSchema = new mongoose.Schema(
     productName: String,
     productSlug: String,
     productThumb: String,
-    isPublic: {
-      type: Boolean,
-      default: false,
-    },
+
     productPrice: Number,
     productDescription: String,
     productType: {
@@ -28,6 +25,20 @@ const productSchema = new mongoose.Schema(
     productAttributes: {
       type: mongoose.Schema.Types.Mixed,
       required: true,
+    },
+    productRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+      set: (val) => Math.round(val * 10) / 10,
+    },
+    productVariations: { type: Array, default: [] },
+    isPublic: {
+      type: Boolean,
+      default: false,
+      index: true,
+      // select: false,
     },
     auth: {
       type: mongoose.Schema.Types.ObjectId,

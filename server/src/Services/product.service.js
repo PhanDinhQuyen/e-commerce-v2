@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const { ProductModel } = require("../Models/product.model");
 const { BadRequestError } = require("../Handlers/error.handler");
+const { default: mongoose } = require("mongoose");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -59,6 +60,10 @@ class ProductService {
       ...productData,
     });
     return productInstance.create();
+  }
+
+  static async getProductsforShop({ auth }) {
+    return await ProductModel.find({ auth });
   }
 }
 

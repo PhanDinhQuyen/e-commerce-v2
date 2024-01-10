@@ -26,6 +26,7 @@ class Auth {
    */
   static checkClientId = async (clientId) => {
     const client = await AuthModel.findById(isObjectId(clientId)).lean();
+
     if (!client) {
       throw new UnAuthorizedError();
     }
@@ -50,6 +51,7 @@ class Auth {
     }
 
     const client = await this.checkClientId(clientId);
+
     req.auth = clientId;
     req.refreshToken = refreshToken;
 
