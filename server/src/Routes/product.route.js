@@ -13,7 +13,12 @@ route.post(
 );
 
 route.get(
-  "/get",
+  "/get/public",
+  handlerCatchError(ProductController.getProductsforShopPublic)
+);
+
+route.get(
+  "/get/all",
   handlerCatchError(Auth.verifyAccessToken),
   handlerCatchError(Role.verifyShop),
   handlerCatchError(ProductController.getProductsforShop)

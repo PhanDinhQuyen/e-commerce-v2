@@ -10,11 +10,10 @@ const ROLES = {
 class Role {
   static async verifyRole(requiredRole, req, res, next) {
     const roleNumber = ROLES[req.role];
-
+    delete req.role;
     if (!Number.isInteger(roleNumber) || requiredRole > roleNumber) {
       throw new UnAuthorizedError();
     }
-
     next();
   }
 

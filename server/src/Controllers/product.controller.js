@@ -2,6 +2,7 @@ const {
   CreateResponse,
   SuccessResponse,
 } = require("../Handlers/success.handler");
+
 const ProductService = require("../Services/product.service");
 class ProductController {
   static createProduct = async (req, res) =>
@@ -10,8 +11,13 @@ class ProductController {
     ).create(res);
 
   static getProductsforShop = async (req, res) =>
+    new SuccessResponse(await ProductService.getProductsforShop(req)).create(
+      res
+    );
+
+  static getProductsforShopPublic = async (req, res) =>
     new SuccessResponse(
-      await ProductService.getProductsforShop(req.query)
+      await ProductService.getProductsforShopPublic(req.query)
     ).create(res);
 }
 module.exports = ProductController;
