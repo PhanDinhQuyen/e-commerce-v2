@@ -39,6 +39,7 @@ class ProductService {
         ProductService.registryProductType(className, classRef);
       }
     });
+    console.log(this.productsRegistry);
   }
 
   /**
