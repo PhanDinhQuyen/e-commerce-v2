@@ -5,6 +5,12 @@ const Role = require("../Auth/verify.role");
 const Auth = require("../Auth/verify.auth");
 const route = require("express").Router();
 
+route.get(
+  "/get/public",
+  handlerCatchError(ProductController.getProductsforShopPublic)
+);
+route.get("/get", handlerCatchError(ProductController.getProduct));
+
 route.post(
   "/create",
   handlerCatchError(Auth.verifyAccessToken),
@@ -13,15 +19,16 @@ route.post(
 );
 
 route.get(
-  "/get/public",
-  handlerCatchError(ProductController.getProductsforShopPublic)
-);
-
-route.get(
-  "/get/all",
+  "/manager/get/all",
   handlerCatchError(Auth.verifyAccessToken),
   handlerCatchError(Role.verifyShop),
   handlerCatchError(ProductController.getProductsforShop)
+);
+route.get(
+  "/manager/get",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(Role.verifyShop),
+  handlerCatchError(ProductController.getProductManager)
 );
 
 module.exports = route;

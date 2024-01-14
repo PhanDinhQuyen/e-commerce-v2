@@ -11,13 +11,22 @@ class ProductController {
     ).create(res);
 
   static getProductsforShop = async (req, res) =>
-    new SuccessResponse(await ProductService.getProductsforShop(req)).create(
-      res
-    );
+    new SuccessResponse(
+      await ProductService.getProductsforShop({ ...req.query, auth: req.auth })
+    ).create(res);
 
   static getProductsforShopPublic = async (req, res) =>
     new SuccessResponse(
       await ProductService.getProductsforShopPublic(req.query)
+    ).create(res);
+
+  static getProduct = async (req, res) =>
+    new SuccessResponse(await ProductService.getProduct(req.query._id)).create(
+      res
+    );
+  static getProductManager = async (req, res) =>
+    new SuccessResponse(
+      await ProductService.getProductManager(req.query._id)
     ).create(res);
 }
 module.exports = ProductController;

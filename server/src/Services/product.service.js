@@ -3,6 +3,10 @@ const fs = require("fs");
 
 const { ProductModel } = require("../Models/product.model");
 const { BadRequestError } = require("../Handlers/error.handler");
+const {
+  queryProducts,
+  queryProduct,
+} = require("../Models/Repositories/product.repo");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -39,7 +43,6 @@ class ProductService {
         ProductService.registryProductType(className, classRef);
       }
     });
-    console.log(this.productsRegistry);
   }
 
   /**
@@ -62,12 +65,19 @@ class ProductService {
     return productInstance.create();
   }
 
-  static async getProductsforShop({ auth }) {
-    return await ProductModel.find({ auth }).lean();
+  static async getProductsforShop({ auth, page, sort }) {
+    return await queryProducts({ auth }, { p: page, s: sort });
   }
 
-  static async getProductsforShopPublic({ auth }) {
-    return await ProductModel.find({ auth, isPublic: true }).lean();
+  static async getProductsforShopPublic({ auth, page }) {
+    return await queryProducts({ auth, isPublic: true }, { p: page });
+  }
+
+  static async getProduct(_id) {
+    return await queryProduct({ _id, isPublic: true });
+  }
+  static async getProductManager(_id) {
+    return await queryProduct({ _id });
   }
 }
 
