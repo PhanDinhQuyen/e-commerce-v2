@@ -6,7 +6,9 @@ const { BadRequestError } = require("../Handlers/error.handler");
 const {
   queryProducts,
   queryProduct,
+  querySearchProducts,
 } = require("../Models/Repositories/product.repo");
+const sanitize = require("../Middlewares/mongo.mid");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -78,6 +80,9 @@ class ProductService {
   }
   static async getProductManager(_id) {
     return await queryProduct({ _id });
+  }
+  static async searchProducts({ query }) {
+    return await querySearchProducts(sanitize(query));
   }
 }
 

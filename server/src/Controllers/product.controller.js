@@ -28,5 +28,10 @@ class ProductController {
     new SuccessResponse(
       await ProductService.getProductManager(req.query._id)
     ).create(res);
+
+  static searchProducts = async (req, res) =>
+    new SuccessResponse(await ProductService.searchProducts(req.query)).create(
+      res
+    );
 }
 module.exports = ProductController;

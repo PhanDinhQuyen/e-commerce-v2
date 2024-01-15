@@ -10,6 +10,7 @@ route.get(
   handlerCatchError(ProductController.getProductsforShopPublic)
 );
 route.get("/get", handlerCatchError(ProductController.getProduct));
+route.get("/search", handlerCatchError(ProductController.searchProducts));
 
 route.post(
   "/create",

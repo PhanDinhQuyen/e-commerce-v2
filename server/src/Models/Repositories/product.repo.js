@@ -17,7 +17,17 @@ const queryProduct = async (query) => {
   return await ProductModel.findOne(query).lean().exec();
 };
 
+const querySearchProducts = async (query) => {
+  return await ProductModel.find(
+    { $text: { $search: query } },
+    { score: { $meta: "textScore" } }
+  )
+    .lean()
+    .exec();
+};
+
 module.exports = {
   queryProducts,
   queryProduct,
+  querySearchProducts,
 };
