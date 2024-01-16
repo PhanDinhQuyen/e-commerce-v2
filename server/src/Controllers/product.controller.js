@@ -33,5 +33,10 @@ class ProductController {
     new SuccessResponse(await ProductService.searchProducts(req.query)).create(
       res
     );
+
+  static publicProduct = async (req, res) =>
+    new SuccessResponse(
+      await ProductService.publicProduct({ ...req.query, auth: req.auth })
+    ).create(res);
 }
 module.exports = ProductController;

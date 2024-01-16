@@ -31,5 +31,10 @@ route.get(
   handlerCatchError(Role.verifyShop),
   handlerCatchError(ProductController.getProductManager)
 );
-
+route.post(
+  "/manager/public",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(Role.verifyShop),
+  handlerCatchError(ProductController.publicProduct)
+);
 module.exports = route;

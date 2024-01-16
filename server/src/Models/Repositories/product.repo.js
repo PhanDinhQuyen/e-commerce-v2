@@ -1,3 +1,4 @@
+const { BadRequestError } = require("../../Handlers/error.handler");
 const { ProductModel } = require("../product.model");
 
 const queryProducts = async (
@@ -26,8 +27,23 @@ const querySearchProducts = async (query) => {
     .exec();
 };
 
+const publicProductForShop = async (_id, auth) => {
+  const product = await ProductModel.findOne({ _id, auth }).lean().exec();
+  if (!product) {
+    throw new BadRequestError("Product not found");
+  }
+  const updateProduct = await ProductModel.findOneAndUpdate(
+    { _id },
+    { isPublic: true },
+    { new: true }
+  );
+
+  return updateProduct;
+};
+
 module.exports = {
   queryProducts,
   queryProduct,
   querySearchProducts,
+  publicProductForShop,
 };

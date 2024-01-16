@@ -7,6 +7,7 @@ const {
   queryProducts,
   queryProduct,
   querySearchProducts,
+  publicProductForShop,
 } = require("../Models/Repositories/product.repo");
 const sanitize = require("../Middlewares/mongo.mid");
 
@@ -83,6 +84,9 @@ class ProductService {
   }
   static async searchProducts({ query }) {
     return await querySearchProducts(sanitize(query));
+  }
+  static async publicProduct({ _id, auth }) {
+    return await publicProductForShop(_id, auth);
   }
 }
 
