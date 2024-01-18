@@ -36,7 +36,20 @@ class ProductController {
 
   static publicProduct = async (req, res) =>
     new SuccessResponse(
-      await ProductService.publicProduct({ ...req.query, auth: req.auth })
+      await ProductService.changePublicProduct({
+        _id: req.query._id,
+        auth: req.auth,
+        _public: true,
+      })
+    ).create(res);
+
+  static unPublicProduct = async (req, res) =>
+    new SuccessResponse(
+      await ProductService.changePublicProduct({
+        _id: req.query._id,
+        auth: req.auth,
+        _public: false,
+      })
     ).create(res);
 }
 module.exports = ProductController;

@@ -18,23 +18,32 @@ const queryProduct = async (query) => {
   return await ProductModel.findOne(query).lean().exec();
 };
 
-const querySearchProducts = async (query) => {
+const querySearchProducts = async (query, isPublic = true) => {
   return await ProductModel.find(
-    { $text: { $search: query } },
+    { $text: { $search: query }, isPublic },
     { score: { $meta: "textScore" } }
   )
     .lean()
     .exec();
 };
 
-const publicProductForShop = async (_id, auth) => {
+const changePublicProductForShop = async (_id, auth, isPublic) => {
   const product = await ProductModel.findOne({ _id, auth }).lean().exec();
+
   if (!product) {
     throw new BadRequestError("Product not found");
   }
+  console.log(isPublic);
+  if (product.isPublic === isPublic) {
+    const errorText = isPublic
+      ? "Product is already public"
+      : "Product is already unpublic";
+    throw new BadRequestError(errorText);
+  }
+
   const updateProduct = await ProductModel.findOneAndUpdate(
     { _id },
-    { isPublic: true },
+    { isPublic },
     { new: true }
   );
 
@@ -45,5 +54,5 @@ module.exports = {
   queryProducts,
   queryProduct,
   querySearchProducts,
-  publicProductForShop,
+  changePublicProductForShop,
 };

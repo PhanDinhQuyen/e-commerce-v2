@@ -37,4 +37,11 @@ route.post(
   handlerCatchError(Role.verifyShop),
   handlerCatchError(ProductController.publicProduct)
 );
+
+route.post(
+  "/manager/unpublic",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(Role.verifyShop),
+  handlerCatchError(ProductController.unPublicProduct)
+);
 module.exports = route;
