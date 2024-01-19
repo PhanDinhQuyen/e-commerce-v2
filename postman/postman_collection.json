@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "5c6ac80e-d320-4dac-ac29-b91dc2e71e66",
+		"name": "Shop Tip",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16969787"
+	},
+	"item": [
+		{
+			"name": "Get",
+			"item": [
+				{
+					"name": "Search Product",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"quyen\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"quyen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5500/v1/api/shop/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5500",
+							"path": [
+								"v1",
+								"api",
+								"shop",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWlsIjoicXV5ZW4iLCJuYW1lIjoicXV5ZW4iLCJzaG9wSWQiOiI2NTJkZjA2MmIwZDQwY2FlMWMzMTQ5MmQiLCJpYXQiOjE2OTgwNzI1MTIsImV4cCI6MTY5ODA5NDExMn0.0RqTcYZTh2OevR3maPeZgwjD3yjKTAd4-2_wROF0cXA",
+								"type": "text"
+							},
+							{
+								"key": "x-client-key",
+								"value": "652df062b0d40cae1c31492d",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"quyen\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"quyen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5500/v1/api/shop/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5500",
+							"path": [
+								"v1",
+								"api",
+								"shop",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5500/v1/api/shop/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5500",
+							"path": [
+								"v1",
+								"api",
+								"shop",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Public Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-client-id",
+								"value": "659cea7e6f7103b1f95fc663",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiNjU5Y2VhN2U2ZjcxMDNiMWY5NWZjNjYzIiwiZW1haWwiOiIxMjNAbWFpbC5jb20iLCJyb2xlIjoic2hvcCIsImlhdCI6MTcwNTU4MTk2NiwiZXhwIjoxNzA1NTg5MTY2fQ.3eEodlLIplWDf2tKcEGZwuJ9NrU_mAkmdVlA65Q83IM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/v1/api/product/manager/public?_id=65a523797ce1f45e558c8c1a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"api",
+								"product",
+								"manager",
+								"public"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "65a523797ce1f45e558c8c1a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
