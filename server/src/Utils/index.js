@@ -37,18 +37,22 @@ const selectDataIntoObject = (array, object) => {
   console.log("Object:", object);
 
   for (const value of array) {
-    console.log("Property:", value);
-    console.log("Has Property:", object.hasOwnProperty(value));
-    console.log("Property Value:", object[value]);
-
     if (Object.prototype.hasOwnProperty.call(object, value)) {
       data[value] = object[value];
     }
   }
 
-  console.log("Final Data:", data);
   return data;
 };
+
+const handleInvalidData = (object) => {
+  for (const key in object) {
+    console.log(object[key]);
+  }
+  return object;
+};
+
+console.log(handleInvalidData({ 1: null, 2: 3, 3: { 1: 2 } }));
 
 module.exports = {
   handlerCatchError,

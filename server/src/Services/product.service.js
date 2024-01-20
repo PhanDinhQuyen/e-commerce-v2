@@ -88,6 +88,9 @@ class ProductService {
   static async changePublicProduct({ _id, auth, _public }) {
     return await changePublicProductForShop(_id, auth, _public);
   }
+  static async updateProduct() {
+    return;
+  }
 }
 
 /**

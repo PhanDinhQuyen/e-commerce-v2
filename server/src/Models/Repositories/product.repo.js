@@ -33,7 +33,7 @@ const changePublicProductForShop = async (_id, auth, isPublic) => {
   if (!product) {
     throw new BadRequestError("Product not found");
   }
-  console.log(isPublic);
+  // console.log(isPublic);
   if (product.isPublic === isPublic) {
     const errorText = isPublic
       ? "Product is already public"

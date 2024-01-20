@@ -51,5 +51,10 @@ class ProductController {
         _public: false,
       })
     ).create(res);
+
+  static updateProduct = async (req, res) =>
+    new SuccessResponse(await ProductService.updateProduct(req.body)).create(
+      res
+    );
 }
 module.exports = ProductController;
