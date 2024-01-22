@@ -2,7 +2,10 @@ const path = require("path");
 const fs = require("fs");
 
 const { ProductModel } = require("../Models/product.model");
-const { BadRequestError } = require("../Handlers/error.handler");
+const {
+  BadRequestError,
+  UnAuthorizedError,
+} = require("../Handlers/error.handler");
 const {
   queryProducts,
   queryProduct,
@@ -97,6 +100,15 @@ class ProductService {
   static async updateProduct({ _id, payload }) {
     const { productType } = payload;
     isObjectId(_id);
+    const productHolder = await queryProduct({ _id });
+
+    if (!productHolder) {
+      throw new BadRequestError("Product not found");
+    }
+    if (productHolder.auth !== auth) {
+      throw new UnAuthorizedError();
+    }
+
     const ProductClass = this.checkProductType(productType);
     const productInstance = new ProductClass(payload);
 

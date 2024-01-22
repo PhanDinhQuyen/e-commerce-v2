@@ -48,7 +48,7 @@ class Electronic extends Product {
     try {
       const objectParams = handleInvalidData(this);
 
-      if (objectParams.product_attributes) {
+      if (objectParams.productAttributes) {
         await updateProductById({
           _id,
           payload: objectParams.productAttributes,

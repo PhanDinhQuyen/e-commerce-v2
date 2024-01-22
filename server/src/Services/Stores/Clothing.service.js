@@ -1,6 +1,5 @@
 const { default: mongoose } = require("mongoose");
 const { ClothingModel } = require("../../Models/product.model");
-
 const { BadRequestError } = require("../../Handlers/error.handler");
 const { Product } = require("../product.service");
 const { handleInvalidData } = require("../../Utils");
@@ -17,9 +16,9 @@ class Clothing extends Product {
    */
   async create() {
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
+      session.startTransaction();
       const newClothing = await ClothingModel.create(this.productAttributes);
       if (!newClothing) {
         throw new BadRequestError("Can't create new clothing");
@@ -44,8 +43,8 @@ class Clothing extends Product {
 
   async updateProduct(_id) {
     const session = await mongoose.startSession();
-    session.startTransaction();
     try {
+      session.startTransaction();
       const objectParams = handleInvalidData(this);
 
       if (objectParams.productAttributes) {

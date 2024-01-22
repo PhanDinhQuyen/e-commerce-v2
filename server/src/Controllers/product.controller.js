@@ -57,6 +57,7 @@ class ProductController {
       await ProductService.updateProduct({
         payload: req.body,
         _id: req.params._id,
+        auth: req.auth,
       })
     ).create(res);
 }
