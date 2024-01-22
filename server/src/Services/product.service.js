@@ -8,8 +8,10 @@ const {
   queryProduct,
   querySearchProducts,
   changePublicProductForShop,
+  updateProductById,
 } = require("../Models/Repositories/product.repo");
 const sanitize = require("../Middlewares/mongo.mid");
+const { isObjectId } = require("../Utils");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -47,7 +49,14 @@ class ProductService {
       }
     });
   }
+  static checkProductType(productType) {
+    if (!ProductService.productsRegistry[productType]) {
+      throw new BadRequestError(`Invalid product type: ${productType}`);
+    }
 
+    const ProductClass = ProductService.productsRegistry[productType];
+    return ProductClass;
+  }
   /**
    * Create a product of the specified type.
    * @param {Object} productData - Data for creating the product.
@@ -56,11 +65,7 @@ class ProductService {
    * @throws {BadRequestError} Throws an error if the product type is invalid.
    */
   static async createProduct({ productType, ...productData }) {
-    if (!ProductService.productsRegistry[productType]) {
-      throw new BadRequestError(`Invalid product type: ${productType}`);
-    }
-
-    const ProductClass = ProductService.productsRegistry[productType];
+    const ProductClass = this.checkProductType(productType);
     const productInstance = new ProductClass({
       productType,
       ...productData,
@@ -88,8 +93,14 @@ class ProductService {
   static async changePublicProduct({ _id, auth, _public }) {
     return await changePublicProductForShop(_id, auth, _public);
   }
-  static async updateProduct() {
-    return;
+
+  static async updateProduct({ _id, payload }) {
+    const { productType } = payload;
+    isObjectId(_id);
+    const ProductClass = this.checkProductType(productType);
+    const productInstance = new ProductClass(payload);
+
+    return productInstance.updateProduct(_id);
   }
 }
 
@@ -125,9 +136,17 @@ class Product {
   async create(_id) {
     return await ProductModel.create({ ...this, _id });
   }
+  async update({ _id, payload, session }) {
+    return await updateProductById({
+      _id,
+      payload,
+      model: ProductModel,
+      session,
+    });
+  }
 }
 // Work with Product extend methods
-module.exports = Product; // Important line
+module.exports = { Product }; // Important line
 // Auto-register product types
 ProductService.autoRegisterProductTypes(
   path.join(__dirname, "./Stores"),

@@ -34,7 +34,6 @@ const isObjectId = (id) => {
  */
 const selectDataIntoObject = (array, object) => {
   const data = {};
-  console.log("Object:", object);
 
   for (const value of array) {
     if (Object.prototype.hasOwnProperty.call(object, value)) {
@@ -47,15 +46,27 @@ const selectDataIntoObject = (array, object) => {
 
 const handleInvalidData = (object) => {
   for (const key in object) {
-    console.log(object[key]);
+    const value = object[key];
+
+    const isNullOrUndefined = value === null || value === undefined;
+    const isObject = typeof value === "object";
+
+    if (isNullOrUndefined) {
+      delete object[key];
+    } else if (isObject) {
+      handleInvalidData(value);
+      if (Object.keys(value).length === 0) {
+        delete object[key];
+      }
+    }
   }
+
   return object;
 };
-
-console.log(handleInvalidData({ 1: null, 2: 3, 3: { 1: 2 } }));
 
 module.exports = {
   handlerCatchError,
   isObjectId,
   selectDataIntoObject,
+  handleInvalidData,
 };

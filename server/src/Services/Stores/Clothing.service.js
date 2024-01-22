@@ -2,7 +2,9 @@ const { default: mongoose } = require("mongoose");
 const { ClothingModel } = require("../../Models/product.model");
 
 const { BadRequestError } = require("../../Handlers/error.handler");
-const Product = require("../product.service");
+const { Product } = require("../product.service");
+const { handleInvalidData } = require("../../Utils");
+const { updateProductById } = require("../../Models/Repositories/product.repo");
 
 /**
  * Class for creating clothing products.
@@ -32,6 +34,36 @@ class Clothing extends Product {
 
       await session.commitTransaction();
       return newProduct;
+    } catch (error) {
+      await session.abortTransaction();
+      throw new BadRequestError(error.message);
+    } finally {
+      await session.endSession();
+    }
+  }
+
+  async updateProduct(_id) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const objectParams = handleInvalidData(this);
+
+      if (objectParams.productAttributes) {
+        await updateProductById({
+          _id,
+          payload: objectParams.productAttributes,
+          model: ClothingModel,
+          session,
+        });
+      }
+
+      const product = await super.update({
+        _id,
+        payload: objectParams,
+        session,
+      });
+      await session.commitTransaction();
+      return product;
     } catch (error) {
       await session.abortTransaction();
       throw new BadRequestError(error.message);

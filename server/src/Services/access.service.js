@@ -115,7 +115,7 @@ class AccessService {
     await TokenService.addRefreshTokenUsed(auth, refreshToken);
 
     const payload = { auth, email: decoded.email, role };
-    console.log({ payload });
+
     const newTokens = await TokenService.createTokensPair(auth, payload);
 
     return newTokens;

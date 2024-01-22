@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 const { ElectronicModel } = require("../../Models/product.model");
 
 const { BadRequestError } = require("../../Handlers/error.handler");
-const Product = require("../product.service");
+const { Product } = require("../product.service");
 
 /**
  * Class for creating electronic products.
@@ -34,6 +34,36 @@ class Electronic extends Product {
 
       await session.commitTransaction();
       return newProduct;
+    } catch (error) {
+      await session.abortTransaction();
+      throw new BadRequestError(error.message);
+    } finally {
+      await session.endSession();
+    }
+  }
+
+  async updateProduct(_id) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const objectParams = handleInvalidData(this);
+
+      if (objectParams.product_attributes) {
+        await updateProductById({
+          _id,
+          payload: objectParams.productAttributes,
+          model: ElectronicModel,
+          session,
+        });
+      }
+
+      const product = await super.update({
+        _id,
+        payload: objectParams,
+        session,
+      });
+      await session.commitTransaction();
+      return product;
     } catch (error) {
       await session.abortTransaction();
       throw new BadRequestError(error.message);

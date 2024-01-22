@@ -53,8 +53,11 @@ class ProductController {
     ).create(res);
 
   static updateProduct = async (req, res) =>
-    new SuccessResponse(await ProductService.updateProduct(req.body)).create(
-      res
-    );
+    new SuccessResponse(
+      await ProductService.updateProduct({
+        payload: req.body,
+        _id: req.params._id,
+      })
+    ).create(res);
 }
 module.exports = ProductController;

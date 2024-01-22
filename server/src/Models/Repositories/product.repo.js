@@ -33,7 +33,7 @@ const changePublicProductForShop = async (_id, auth, isPublic) => {
   if (!product) {
     throw new BadRequestError("Product not found");
   }
-  // console.log(isPublic);
+
   if (product.isPublic === isPublic) {
     const errorText = isPublic
       ? "Product is already public"
@@ -50,9 +50,19 @@ const changePublicProductForShop = async (_id, auth, isPublic) => {
   return updateProduct;
 };
 
+const updateProductById = async ({
+  _id,
+  payload,
+  model,
+  isNew = true,
+  session,
+}) => {
+  return await model.findByIdAndUpdate(_id, payload, { new: isNew, session });
+};
 module.exports = {
   queryProducts,
   queryProduct,
   querySearchProducts,
   changePublicProductForShop,
+  updateProductById,
 };

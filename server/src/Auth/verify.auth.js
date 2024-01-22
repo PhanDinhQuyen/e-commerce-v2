@@ -83,7 +83,7 @@ class Auth {
     }
 
     const decoded = TokenService.decodedToken(accessToken, token.privateKey);
-    // console.log(decoded);
+
     if (
       decoded.auth !== clientId ||
       decoded.email !== client.email ||

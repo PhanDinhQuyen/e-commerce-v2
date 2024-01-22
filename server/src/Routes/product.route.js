@@ -52,4 +52,9 @@ route.post(
   handlerCatchError(ProductController.updateProduct)
 );
 
+route.post(
+  "/manager/update/:_id",
+  handlerCatchError(ProductController.updateProduct)
+);
+
 module.exports = route;
