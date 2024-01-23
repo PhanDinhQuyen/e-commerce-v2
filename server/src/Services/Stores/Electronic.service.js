@@ -44,9 +44,13 @@ class Electronic extends Product {
 
   async updateProduct(_id) {
     const session = await mongoose.startSession();
-    session.startTransaction();
     try {
-      const objectParams = handleInvalidData(this);
+      session.startTransaction();
+      const objectParams = updateNestedObjectParse(this);
+      delete objectParams.productType;
+      if (isObjectEmpty(objectParams)) {
+        throw new BadRequestError("No thing to update");
+      }
 
       if (objectParams.productAttributes) {
         await updateProductById({

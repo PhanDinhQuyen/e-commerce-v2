@@ -64,9 +64,38 @@ const handleInvalidData = (object) => {
   return object;
 };
 
+const updateNestedObjectParse = (object) => {
+  const newObj = {};
+
+  for (const key in object) {
+    const value = object[key];
+
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    if (typeof value === "object") {
+      const response = updateNestedObjectParse(value);
+      for (const nestedKey in response) {
+        newObj[`${key}.${nestedKey}`] = response[nestedKey];
+      }
+    } else {
+      newObj[key] = value;
+    }
+  }
+
+  return newObj;
+};
+
+const isObjectEmpty = (obj) => {
+  return Object.keys(obj).length === 0;
+};
+
 module.exports = {
   handlerCatchError,
   isObjectId,
   selectDataIntoObject,
   handleInvalidData,
+  updateNestedObjectParse,
+  isObjectEmpty,
 };

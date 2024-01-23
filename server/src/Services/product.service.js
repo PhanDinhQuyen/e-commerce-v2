@@ -97,15 +97,15 @@ class ProductService {
     return await changePublicProductForShop(_id, auth, _public);
   }
 
-  static async updateProduct({ _id, payload }) {
+  static async updateProduct({ _id, payload, auth }) {
     const { productType } = payload;
     isObjectId(_id);
     const productHolder = await queryProduct({ _id });
-
+    console.log(auth);
     if (!productHolder) {
       throw new BadRequestError("Product not found");
     }
-    if (productHolder.auth !== auth) {
+    if (productHolder.auth.toString() !== auth) {
       throw new UnAuthorizedError();
     }
 

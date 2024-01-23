@@ -54,8 +54,8 @@ route.post(
 
 route.patch(
   "/manager/update/:_id",
-  // handlerCatchError(Auth.verifyAccessToken),
-  // handlerCatchError(Role.verifyShop),
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(Role.verifyShop),
   handlerCatchError(ProductController.updateProduct)
 );
 

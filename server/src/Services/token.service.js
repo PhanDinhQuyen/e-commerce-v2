@@ -62,7 +62,7 @@ class TokenService {
     ];
 
     const query = { auth };
-    const updates = { privateKey, publicKey };
+    const updates = { privateKey, publicKey, refreshTokensUsed: [] };
     const options = { new: true, upsert: true };
 
     await TokenModel.findOneAndUpdate(query, updates, options);

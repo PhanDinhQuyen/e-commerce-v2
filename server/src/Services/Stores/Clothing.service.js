@@ -2,7 +2,11 @@ const { default: mongoose } = require("mongoose");
 const { ClothingModel } = require("../../Models/product.model");
 const { BadRequestError } = require("../../Handlers/error.handler");
 const { Product } = require("../product.service");
-const { handleInvalidData } = require("../../Utils");
+const {
+  handleInvalidData,
+  updateNestedObjectParse,
+  isObjectEmpty,
+} = require("../../Utils");
 const { updateProductById } = require("../../Models/Repositories/product.repo");
 
 /**
@@ -45,7 +49,11 @@ class Clothing extends Product {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
-      const objectParams = handleInvalidData(this);
+      const objectParams = updateNestedObjectParse(this);
+      delete objectParams.productType;
+      if (isObjectEmpty(objectParams)) {
+        throw new BadRequestError("No thing to update");
+      }
 
       if (objectParams.productAttributes) {
         await updateProductById({
