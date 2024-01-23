@@ -15,6 +15,7 @@ const {
 } = require("../Models/Repositories/product.repo");
 const sanitize = require("../Middlewares/mongo.mid");
 const { isObjectId } = require("../Utils");
+const InventoryModel = require("../Models/inventory.model");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -91,7 +92,7 @@ class ProductService {
     return await queryProduct({ _id });
   }
   static async searchProducts({ query }) {
-    return await querySearchProducts(sanitize(query));
+    return await querySearchProducts(query);
   }
   static async changePublicProduct({ _id, auth, _public }) {
     return await changePublicProductForShop(_id, auth, _public);
@@ -146,7 +147,15 @@ class Product {
    * @returns {Promise} A promise that resolves to the created product.
    */
   async create(_id) {
-    return await ProductModel.create({ ...this, _id });
+    const product = await ProductModel.create({ ...this, _id });
+    if (product) {
+      await InventoryModel.create({
+        inventoryProductId: _id,
+        inventoryAuth: this.auth,
+        inventoryStock: this.productQuantity,
+      });
+    }
+    return product;
   }
   async update({ _id, payload, session }) {
     return await updateProductById({

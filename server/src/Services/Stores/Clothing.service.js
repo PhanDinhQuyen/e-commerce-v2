@@ -21,8 +21,8 @@ class Clothing extends Product {
   async create() {
     const session = await mongoose.startSession();
 
+    session.startTransaction();
     try {
-      session.startTransaction();
       const newClothing = await ClothingModel.create(this.productAttributes);
       if (!newClothing) {
         throw new BadRequestError("Can't create new clothing");
