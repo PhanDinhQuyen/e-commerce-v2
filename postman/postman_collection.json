@@ -13,7 +13,27 @@
 					"name": "Search Product",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/api/product/search?query=test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"api",
+								"product",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "test"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -29,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"mail\": \"quyen\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"quyen\"\r\n}",
+							"raw": "{\r\n    \"email\": \"1234@mail.com\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"Quyen@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,17 +57,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5500/v1/api/shop/create",
+							"raw": "http://localhost:5000/v1/api/account/signup",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5500",
+							"port": "5000",
 							"path": [
 								"v1",
 								"api",
-								"shop",
-								"create"
+								"account",
+								"signup"
 							]
 						}
 					},
@@ -71,7 +91,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"mail\": \"quyen\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"quyen\"\r\n}",
+							"raw": "{\r\n    \"email\": \"1234@mail.com\",\r\n    \"name\": \"quyen\",\r\n    \"password\": \"Quyen@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,17 +99,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5500/v1/api/shop/login",
+							"raw": "http://localhost:5000/v1/api/account/signin",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5500",
+							"port": "5000",
 							"path": [
 								"v1",
 								"api",
-								"shop",
-								"login"
+								"account",
+								"signin"
 							]
 						}
 					},
@@ -99,19 +119,39 @@
 					"name": "Create",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiNjVhNTI4YmNhZjNmN2MzMWQyMWYwM2Y3IiwiZW1haWwiOiIxMjM0QG1haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MDU5MTQ2NzUsImV4cCI6MTcwNTkyMTg3NX0.F1PKPrUHP7lUX6g2N4lHX3bHtqR-G5RHyjLHGJm0RO4",
+								"type": "text"
+							},
+							{
+								"key": "x-client-id",
+								"value": "65a528bcaf3f7c31d21f03f7",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\": \"test\",\r\n    \"productThumb\": \"21321\",\r\n    \"productPrice\": 123,\r\n    \"productDescription\": \"vai ca dai\",\r\n    \"productType\": \"Clothing\",\r\n    \"productQuantity\": 123,\r\n    \"productAttributes\": {\r\n        \"brand\": \"coolkit\"\r\n    },\r\n    \"productVariations\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5500/v1/api/shop/refresh",
+							"raw": "http://localhost:5000/v1/api/product/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5500",
+							"port": "5000",
 							"path": [
 								"v1",
 								"api",
-								"shop",
-								"refresh"
+								"product",
+								"create"
 							]
 						}
 					},
@@ -129,7 +169,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiNjU5Y2VhN2U2ZjcxMDNiMWY5NWZjNjYzIiwiZW1haWwiOiIxMjNAbWFpbC5jb20iLCJyb2xlIjoic2hvcCIsImlhdCI6MTcwNTU4MTk2NiwiZXhwIjoxNzA1NTg5MTY2fQ.3eEodlLIplWDf2tKcEGZwuJ9NrU_mAkmdVlA65Q83IM",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiNjU5Y2VhN2U2ZjcxMDNiMWY5NWZjNjYzIiwiZW1haWwiOiIxMjNAbWFpbC5jb20iLCJyb2xlIjoic2hvcCIsImlhdCI6MTcwNTg4NjM1MywiZXhwIjoxNzA1ODkzNTUzfQ.ySAgY8kJ-HUXtUv2u2DKbkuj5GK1wVONI258fq-72Ww",
 								"type": "text"
 							}
 						],
@@ -152,6 +192,84 @@
 									"key": "_id",
 									"value": "65a523797ce1f45e558c8c1a"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UnPublic Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-client-id",
+								"value": "659cea7e6f7103b1f95fc663",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiNjU5Y2VhN2U2ZjcxMDNiMWY5NWZjNjYzIiwiZW1haWwiOiIxMjNAbWFpbC5jb20iLCJyb2xlIjoic2hvcCIsImlhdCI6MTcwNTg4NjM1MywiZXhwIjoxNzA1ODkzNTUzfQ.ySAgY8kJ-HUXtUv2u2DKbkuj5GK1wVONI258fq-72Ww",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/v1/api/product/manager/unpublic?_id=65a523797ce1f45e558c8c1a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"api",
+								"product",
+								"manager",
+								"unpublic"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "65a523797ce1f45e558c8c1a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patch",
+			"item": [
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": \"65a523797ce1f45e558c8c1a\",\r\n    \"productName\": \"test\",\r\n    \"productThumb\": \"21321\",\r\n    \"productPrice\": 123,\r\n    \"productDescription\": null,\r\n    \"productType\": \"Clothing\",\r\n    \"productQuantity\": 123,\r\n    \"productAttributes\": {\r\n        \"brand\": \"coolkit 1\",\r\n        \"color\": \"red\"\r\n    },\r\n    \"productRating\": 0,\r\n    \"productVariations\": [],\r\n    \"isPublic\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/api/product/manager/update/65a523797ce1f45e558c8c1e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"api",
+								"product",
+								"manager",
+								"update",
+								"65a523797ce1f45e558c8c1e"
 							]
 						}
 					},
