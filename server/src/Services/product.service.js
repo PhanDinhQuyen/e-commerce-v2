@@ -102,7 +102,6 @@ class ProductService {
     const { productType } = payload;
     isObjectId(_id);
     const productHolder = await queryProduct({ _id });
-    console.log(auth);
     if (!productHolder) {
       throw new BadRequestError("Product not found");
     }

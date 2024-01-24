@@ -19,7 +19,6 @@ const queryProduct = async (query) => {
 };
 
 const querySearchProducts = async (query, isPublic = true) => {
-  console.log({ query });
   return await ProductModel.find(
     { $text: { $search: query }, isPublic },
     { score: { $meta: "textScore" } }
