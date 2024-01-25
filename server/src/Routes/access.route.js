@@ -8,6 +8,9 @@ const {
 } = require("../Middlewares/sign.mid");
 const { handlerCatchError } = require("../Utils");
 
+console.log(typeof validateSignUpData); // Should print "function"
+console.log(typeof AccessController.signUp); // Should print "function"
+
 route.post(
   "/signup",
   handlerCatchError(validateSignUpData),
