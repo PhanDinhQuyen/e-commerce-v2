@@ -1,4 +1,4 @@
-const { isValidObjectId } = require("mongoose");
+const { isValidObjectId, default: mongoose } = require("mongoose");
 const { BadRequestError } = require("../Handlers/error.handler");
 
 /**
@@ -22,7 +22,7 @@ const isObjectId = (id) => {
   if (!isValidObjectId(id)) {
     throw new BadRequestError();
   }
-  return id;
+  return new mongoose.Types.ObjectId(id);
 };
 
 /**
@@ -32,6 +32,7 @@ const isObjectId = (id) => {
  * @param {Object} object - The source object from which properties will be selected.
  * @returns {Object} - A new object containing selected properties.
  */
+
 const selectDataIntoObject = (array, object) => {
   const data = {};
 

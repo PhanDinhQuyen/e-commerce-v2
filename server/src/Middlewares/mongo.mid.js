@@ -1,4 +1,4 @@
-const { BadRequestError } = require("../Handlers/error.handler");
+// const { BadRequestError } = require("../Handlers/error.handler");
 
 function sanitize(obj) {
   if (obj instanceof Object) {
