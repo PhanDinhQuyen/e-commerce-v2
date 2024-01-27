@@ -18,7 +18,6 @@ const validateDiscountPayload = (req, res, next) => {
     discountStatus,
   } = req.body;
 
-  // Check if required fields are present
   if (
     !discountName ||
     !discountType ||
@@ -33,17 +32,14 @@ const validateDiscountPayload = (req, res, next) => {
     throw new BadRequestError("Missing required fields");
   }
 
-  // Check discountType enum values
   if (discountType !== "fixedAmount" && discountType !== "percentage") {
     throw new BadRequestError("Invalid discountType value");
   }
 
-  // Check discountAppliesTo enum values
   if (discountAppliesTo !== "all" && discountAppliesTo !== "specified") {
     throw new BadRequestError("Invalid discountAppliesTo value");
   }
 
-  // Check if discountStartDate is before discountEndDate
   const startDate = new Date(discountStartDate);
   const endDate = new Date(discountEndDate);
 

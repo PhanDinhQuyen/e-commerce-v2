@@ -3,7 +3,7 @@ const { ElectronicModel } = require("../../Models/product.model");
 
 const { BadRequestError } = require("../../Handlers/error.handler");
 const { Product } = require("../product.service");
-
+const { isObjectEmpty, updateNestedObjectParse } = require("../../Utils");
 /**
  * Class for creating electronic products.
  */
