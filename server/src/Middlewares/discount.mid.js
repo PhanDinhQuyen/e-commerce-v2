@@ -31,13 +31,11 @@ const validateDiscountPayload = (req, res, next) => {
   ) {
     throw new BadRequestError("Missing required fields");
   }
-
-  if (discountType !== "fixedAmount" && discountType !== "percentage") {
+  if (["fixedAmount", "percentage"].includes(discountType)) {
     throw new BadRequestError("Invalid discountType value");
   }
-
-  if (discountAppliesTo !== "all" && discountAppliesTo !== "specified") {
-    throw new BadRequestError("Invalid discountAppliesTo value");
+  if (["all", "specified"].includes(discountAppliesTo)) {
+    throw new BadRequestError("Invalid discountType value");
   }
 
   const startDate = new Date(discountStartDate);
