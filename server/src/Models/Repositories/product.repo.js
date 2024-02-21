@@ -23,6 +23,7 @@ const querySearchProducts = async (query, isPublic = true) => {
     { $text: { $search: query }, isPublic },
     { score: { $meta: "textScore" } }
   )
+    .limit(10)
     .lean()
     .exec();
 };

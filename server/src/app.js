@@ -43,7 +43,10 @@ function main() {
   app.use("/v1/api/account", require("./Routes/access.route"));
   app.use("/v1/api/product", require("./Routes/product.route"));
   app.use("/v1/api/discount", require("./Routes/discount.route"));
-
+  //Test
+  // app.get("/v1/api/test/add", (req, res) => {
+  //   require("./Tests/add.product");
+  // });
   //Error handler
   app.use((req, res, next) => {
     const error = new NotFoundRequestError();
