@@ -59,8 +59,8 @@ productSchema.pre("save", async function (next) {
 
 productSchema.index({
   productName: "text",
-  productSlug: "text",
-  productDescription: "text",
+  // productSlug: "text",
+  // productDescription: "text",
 });
 
 const clothingSchema = new mongoose.Schema(

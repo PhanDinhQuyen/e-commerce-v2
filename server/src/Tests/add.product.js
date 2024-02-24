@@ -1,41 +1,43 @@
 const { faker } = require("@faker-js/faker");
 // import { faker } from "faker-js/faker";
 // import { ClothingModel, ElectronicModel } from "../Models/product.model";
+const slugify = require("slugify");
 const {
   ClothingModel,
   ElectronicModel,
   ProductModel,
 } = require("../Models/product.model");
+const ProductService = require("../Services/product.service");
 const getRandomType = () => {
   return Math.random() < 0.5 ? "Electronic" : "Clothing";
-};
-
-const getRandomAttributes = (type) => {
-  if (type === "Electronic") {
-    return {
-      brand: faker.vehicle.manufacturer(),
-      model: faker.vehicle.model(),
-      color: faker.color.human(),
-    };
-  } else if (type === "Clothing") {
-    return {
-      brand: faker.vehicle.manufacturer(),
-      size: faker.number.int({ min: 20, max: 50 }),
-      material: faker.commerce.productMaterial(),
-    };
-  }
 };
 const typesModel = {
   Electronic: ElectronicModel,
   Clothing: ClothingModel,
 };
+
+const getRandomAttributes = (type) => {
+  const types = {
+    Electronic: {
+      brand: faker.vehicle.manufacturer(),
+      model: faker.vehicle.model(),
+      color: faker.color.human(),
+    },
+    Clothing: {
+      brand: faker.vehicle.manufacturer(),
+      size: faker.number.int({ min: 20, max: 50 }),
+      material: faker.commerce.productMaterial(),
+    },
+  };
+  return types[type];
+};
 const generateRandomProduct = async () => {
   const type = getRandomType();
   const attributes = getRandomAttributes(type);
-  const addAttributes = await typesModel[type].create(attributes);
+  // const addAttributes = await typesModel[type].create(attributes);
 
-  return {
-    _id: addAttributes._id,
+  const product = {
+    // _id: addAttributes._id,
     productName: faker.commerce.productName(),
     productThumb: faker.image.url(),
     productPrice: faker.commerce.price(),
@@ -47,20 +49,26 @@ const generateRandomProduct = async () => {
     isPublic: faker.datatype.boolean(faker.number.float({ min: 0, max: 1 })),
     auth: "659cea7e6f7103b1f95fc663", // Replace with an actual user ID if needed
   };
+  // product.productSlug = slugify(product.productName);
+  return product;
 };
 
-async function add() {
-  for (let i = 0; i < 10000; i++) {
-    try {
-      const product = await generateRandomProduct();
-      await ProductModel.create(product);
-    } catch (e) {
-      console.log(e);
-      break;
+async function addRandomProductToDB() {
+  let batchSize = 500;
+  let breakCount = 0;
+  for (let i = 0; i < 2000; i += batchSize) {
+    for (let j = 0; j < batchSize; j++) {
+      try {
+        const product = await generateRandomProduct();
+        await ProductService.createProduct(product);
+      } catch (error) {
+        breakCount++;
+        break;
+      }
     }
   }
+  console.log(breakCount);
+  return "Ok";
 }
 
-let radom = add();
-
-module.exports = radom;
+module.exports = addRandomProductToDB();

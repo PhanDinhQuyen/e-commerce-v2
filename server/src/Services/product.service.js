@@ -13,7 +13,6 @@ const {
   changePublicProductForShop,
   updateProductById,
 } = require("../Models/Repositories/product.repo");
-const sanitize = require("../Middlewares/mongo.mid");
 const { isObjectId } = require("../Utils");
 const InventoryModel = require("../Models/inventory.model");
 
