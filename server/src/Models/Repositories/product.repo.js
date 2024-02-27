@@ -22,10 +22,13 @@ const querySearchProducts = async (query, isPublic = true) => {
   if (query.length < 3) {
     throw new BadRequestError(`Query must be greater than 3`);
   }
-  let match_stage = { $text: { $search: query }, isPublic };
-  let sort_stage = { score: { $meta: "textScore" } };
-  return await ProductModel.find(match_stage, sort_stage)
-    .sort(sort_stage)
+  const matchStage = {
+    $text: { $search: query },
+    isPublic,
+  };
+  const sortStage = { score: { $meta: "textScore" } };
+  return await ProductModel.find(matchStage, sortStage)
+    .sort(sortStage)
     .limit(10)
     .lean()
     .exec();

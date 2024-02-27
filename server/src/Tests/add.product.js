@@ -63,12 +63,11 @@ async function addRandomProductToDB() {
         await ProductService.createProduct(product);
       } catch (error) {
         breakCount++;
-        break;
+        continue;
       }
     }
   }
-  console.log(breakCount);
-  return "Ok";
+  return;
 }
 
 module.exports = addRandomProductToDB();

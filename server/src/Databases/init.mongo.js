@@ -3,6 +3,8 @@ const isLocal = require("../Helpers/checkNode.helper");
 
 const CONNECT_STR = require("../Helpers/connectStrDB.helper");
 
+let count = 0;
+const MAX_RECONNECT = 3;
 /**
  * Class representing a MongoDB database connection.
  */
@@ -31,12 +33,22 @@ class DataBase {
         maxPoolSize: 50,
       })
       .then(() => {
+        count = 0;
         const connectionMessage = isLocal
           ? `Connecting to ${CONNECT_STR} successfully`
           : "Connecting to Database successfully";
         console.log(connectionMessage);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        count++;
+        if (count > MAX_RECONNECT) {
+          console.error("Connection error");
+          console.error(error);
+        } else {
+          console.log(`Reconnect count ${count} to database`);
+          this.connect();
+        }
+      });
   }
 
   /**

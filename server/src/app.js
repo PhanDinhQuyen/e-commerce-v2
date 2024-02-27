@@ -18,7 +18,7 @@ const corsConfig = {
   origin: process.env.CLIENT_URL || "*", // Use '*' for any origin in development
   credentials: true,
 };
-const compressionConfig = { chunkSize: 1024, level: 2 };
+const compressionConfig = { chunkSize: 64, level: 2 };
 
 function main() {
   //Middlewares
@@ -46,6 +46,7 @@ function main() {
   //Test
   app.get("/v1/api/test/add", (req, res) => {
     require("./Tests/add.product");
+    return res.status(StatusCodes.OK).json("Success");
   });
   //Error handler
   app.use((req, res, next) => {
