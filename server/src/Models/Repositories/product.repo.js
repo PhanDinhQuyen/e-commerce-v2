@@ -29,7 +29,7 @@ const querySearchProducts = async (query, isPublic = true) => {
   const sortStage = { score: { $meta: "textScore" } };
   return await ProductModel.find(matchStage, sortStage)
     .sort(sortStage)
-    .limit(10)
+    .limit(5)
     .lean()
     .exec();
 };

@@ -15,9 +15,9 @@ class Electronic extends Product {
    */
   async create() {
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
+      session.startTransaction();
       const newElectronic = await ElectronicModel.create(
         this.productAttributes
       );

@@ -1,19 +1,7 @@
 const { faker } = require("@faker-js/faker");
-// import { faker } from "faker-js/faker";
-// import { ClothingModel, ElectronicModel } from "../Models/product.model";
-const slugify = require("slugify");
-const {
-  ClothingModel,
-  ElectronicModel,
-  ProductModel,
-} = require("../Models/product.model");
 const ProductService = require("../Services/product.service");
 const getRandomType = () => {
   return Math.random() < 0.5 ? "Electronic" : "Clothing";
-};
-const typesModel = {
-  Electronic: ElectronicModel,
-  Clothing: ClothingModel,
 };
 
 const getRandomAttributes = (type) => {
@@ -67,6 +55,7 @@ async function addRandomProductToDB() {
       }
     }
   }
+  console.log(["breakCount", breakCount]);
   return;
 }
 
