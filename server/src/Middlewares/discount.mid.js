@@ -31,10 +31,10 @@ const validateDiscountPayload = (req, res, next) => {
   ) {
     throw new BadRequestError("Missing required fields");
   }
-  if (["fixedAmount", "percentage"].includes(discountType)) {
+  if (!["fixedAmount", "percentage"].includes(discountType)) {
     throw new BadRequestError("Invalid discountType value");
   }
-  if (["all", "specified"].includes(discountAppliesTo)) {
+  if (!["all", "specified"].includes(discountAppliesTo)) {
     throw new BadRequestError("Invalid discountType value");
   }
 
@@ -50,7 +50,6 @@ const validateDiscountPayload = (req, res, next) => {
       "Invalid date range. discountStartDate must be before discountEndDate"
     );
   }
-
   next();
 };
 
