@@ -2,9 +2,11 @@ const { BadRequestError } = require("../Handlers/error.handler");
 const { foundDiscountCode } = require("../Models/Repositories/discount.repo");
 const { queryProducts } = require("../Models/Repositories/product.repo");
 const DiscountModel = require("../Models/discount.model");
-
+const validateDiscountPayload = require("../Middlewares/discount.mid");
 class DiscountService {
   static createDiscountCode = async (payload) => {
+    await validateDiscountPayload(payload);
+
     const holderDiscount = await foundDiscountCode(payload);
 
     if (holderDiscount && holderDiscount.discountStatus) {

@@ -1,6 +1,6 @@
 const { BadRequestError } = require("../Handlers/error.handler");
 
-const validateDiscountPayload = (req, res, next) => {
+const validateDiscountPayload = (payload) => {
   const {
     discountName,
     discountDescription,
@@ -16,7 +16,7 @@ const validateDiscountPayload = (req, res, next) => {
     discountAppliesTo,
     discountProducts,
     discountStatus,
-  } = req.body;
+  } = payload;
 
   if (
     !discountName ||
@@ -50,7 +50,6 @@ const validateDiscountPayload = (req, res, next) => {
       "Invalid date range. discountStartDate must be before discountEndDate"
     );
   }
-  next();
 };
 
 module.exports = validateDiscountPayload;

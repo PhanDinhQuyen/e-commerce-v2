@@ -9,7 +9,6 @@ route.post(
   "/create",
   handlerCatchError(Auth.verifyAccessToken),
   handlerCatchError(Role.verifyShop),
-  handlerCatchError(validateDiscountPayload),
   handlerCatchError(DiscountController.createDiscountCode)
 );
 
