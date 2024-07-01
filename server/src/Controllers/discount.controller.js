@@ -10,11 +10,10 @@ class DiscountController {
       await DiscountService.createDiscountCode({ ...req.body, auth: req.auth })
     ).create(res);
 
-  static getAllDiscountCodesWithProduct = async (req, res) =>
+  static getAllProductShopWithDiscount = async (req, res) =>
     new SuccessResponse(
-      await DiscountService.getAllDiscountCodesWithProduct({
+      await DiscountService.getAllProductShopWithDiscount({
         ...req.body,
-        auth: req.auth,
       })
     ).create(res);
 }

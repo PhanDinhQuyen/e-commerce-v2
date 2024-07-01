@@ -92,6 +92,11 @@ const isObjectEmpty = (obj) => {
   return Object.keys(obj).length === 0;
 };
 
+const unSelectData = (arr) =>
+  arr.map((item) => {
+    [item] = -1;
+  });
+
 module.exports = {
   handlerCatchError,
   isObjectId,
@@ -99,4 +104,5 @@ module.exports = {
   handleInvalidData,
   updateNestedObjectParse,
   isObjectEmpty,
+  unSelectData,
 };

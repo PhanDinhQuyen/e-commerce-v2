@@ -3,7 +3,6 @@ const DiscountController = require("../Controllers/discount.controller");
 const Auth = require("../Auth/verify.auth");
 const Role = require("../Auth/verify.role");
 const route = require("express").Router();
-const validateDiscountPayload = require("../Middlewares/discount.mid");
 
 route.post(
   "/create",
@@ -14,9 +13,7 @@ route.post(
 
 route.get(
   "/get",
-  handlerCatchError(Auth.verifyAccessToken),
-  handlerCatchError(Role.verifyShop),
-  handlerCatchError(DiscountController.getAllDiscountCodesWithProduct)
+  handlerCatchError(DiscountController.getAllProductShopWithDiscount)
 );
 
 module.exports = route;
