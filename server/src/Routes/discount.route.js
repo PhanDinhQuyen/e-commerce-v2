@@ -12,8 +12,32 @@ route.post(
 );
 
 route.get(
-  "/get",
+  "/get/products",
   handlerCatchError(DiscountController.getAllProductShopWithDiscount)
+);
+
+route.get(
+  "/get/discounts",
+  handlerCatchError(DiscountController.getAllDiscountCodeWithShop)
+);
+
+route.get(
+  "/get/amount",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(DiscountController.getDiscountAmount)
+);
+
+route.get(
+  "/get/cancel",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(DiscountController.cancelDiscountCode)
+);
+
+route.delete(
+  "/delete/discount",
+  handlerCatchError(Auth.verifyAccessToken),
+  handlerCatchError(Role.verifyShop),
+  handlerCatchError(DiscountController.deleteDiscount)
 );
 
 module.exports = route;

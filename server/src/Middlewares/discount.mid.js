@@ -41,8 +41,8 @@ const validateDiscountPayload = (payload) => {
   const startDate = new Date(discountStartDate);
   const endDate = new Date(discountEndDate);
   const now = Date.now();
-  if (now > startDate || now > endDate) {
-    throw new BadRequestError();
+  if (now > endDate) {
+    throw new BadRequestError("Date invalid");
   }
 
   if (startDate >= endDate) {
