@@ -7,7 +7,7 @@ function sanitize(obj) {
         if (/^\$/.test(key)) {
           delete obj[key];
           // throw new BadRequestError();
-          console.log(["Warning", "Alert SQL injection"]);
+          console.log(["Warning", "Alert noSQL injection"]);
         } else {
           sanitize(obj[key]);
         }

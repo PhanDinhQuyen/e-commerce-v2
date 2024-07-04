@@ -19,6 +19,7 @@ const handlerCatchError = (func) => (req, res, next) =>
  * @throws {BadRequestError} - If the ID is not a valid ObjectId.
  */
 const isObjectId = (id) => {
+  console.log(id);
   if (!isValidObjectId(id)) {
     throw new BadRequestError();
   }
@@ -94,7 +95,7 @@ const isObjectEmpty = (obj) => {
 
 const unSelectData = (arr) =>
   arr.map((item) => {
-    [item] = -1;
+    return { [item]: -1 };
   });
 
 module.exports = {
