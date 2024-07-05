@@ -4,26 +4,31 @@ const DOCUMENT_NAME = "Cart";
 const COLLECTION_NAME = "Carts";
 const DOCUMENT_REF_AUTH = "Auth";
 
-const cartProducts = new mongoose.Schema({
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
+const cartProducts = new mongoose.Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    productShopId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Auth",
+      required: true,
+    },
+    productQuantity: {
+      type: Number,
+      required: true,
+    },
+    productPrice: {
+      type: Number,
+      required: true,
+    },
   },
-  productShopId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Auth",
-    required: true,
-  },
-  productQuantity: {
-    type: Number,
-    required: true,
-  },
-  productPrice: {
-    type: Number,
-    required: true,
-  },
-});
+  {
+    _id: false,
+  }
+);
 
 const cartSchema = new mongoose.Schema(
   {
@@ -34,14 +39,9 @@ const cartSchema = new mongoose.Schema(
       default: "active",
     },
     cartProducts: {
-      type: Array,
+      type: [cartProducts],
       required: true,
       default: [],
-    },
-    cartCountProducts: {
-      type: Number,
-      required: true,
-      default: 0,
     },
     cartUserId: {
       type: mongoose.Schema.Types.ObjectId,
