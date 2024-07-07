@@ -7,3 +7,5 @@ class OrderController {
       res
     );
 }
+
+module.exports = OrderController;
