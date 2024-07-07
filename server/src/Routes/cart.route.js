@@ -8,7 +8,7 @@ const route = require("express").Router();
 route.post(
   "/add/products",
   handlerCatchError(Auth.verifyAccessToken),
-  handlerCatchError(CartController.addProductToCart)
+  handlerCatchError(CartController.addProductsToCart)
 );
 
 route.post(

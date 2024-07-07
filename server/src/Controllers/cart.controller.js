@@ -2,7 +2,7 @@ const { SuccessResponse } = require("../Handlers/success.handler");
 const CartService = require("../Services/cart.service");
 
 class CartController {
-  static addProductToCart = async (req, res) =>
+  static addProductsToCart = async (req, res) =>
     new SuccessResponse(
       await CartService.addProductsToCart({ cartUserId: req.auth, ...req.body })
     ).create(res);

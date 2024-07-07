@@ -1,7 +1,17 @@
 const CartModel = require("../Models/cart.model");
 const { isObjectId } = require("../Utils");
-
+const { queryProduct } = require("../Models/Repositories/product.repo");
+const { NotFoundRequestError } = require("../Handlers/error.handler");
 class CartService {
+  static interfaceCartProduct = (holderProduct, product) => {
+    return {
+      productId: holderProduct._id,
+      productQuantity: product.productQuantity,
+      productShopId: holderProduct.auth,
+      productPrice: holderProduct.productPrice,
+    };
+  };
+
   static async createUserCart({ products, cartUserId }) {
     const query = { cartUserId };
     const updateOrInsert = { $addToSet: { cartProducts: products } };
@@ -16,7 +26,20 @@ class CartService {
       return await this.createUserCart({ products, cartUserId });
     }
     if (!cartHolder.cartProducts.length) {
-      cartHolder.cartProducts = products;
+      const cart = [];
+      for (let i = 0; i < products.length; i++) {
+        const holderProduct = await queryProduct({
+          _id: isObjectId(products[i].productId),
+          auth: products[i].auth,
+          isPublic: true,
+        });
+
+        if (!holderProduct) {
+          throw new NotFoundRequestError("Product not found");
+        }
+        cart.push(this.interfaceCartProduct(holderProduct, products[i]));
+      }
+      cartHolder.cartProducts = cart;
       return await cartHolder.save();
     }
     const cartProducts = cartHolder.cartProducts;
@@ -26,19 +49,33 @@ class CartService {
         return item.productId.toString() === product.productId;
       });
 
+      const holderProduct = await queryProduct({
+        _id: isObjectId(product.productId),
+        auth: product.productShopId,
+        isPublic: true,
+      });
+      if (!holderProduct) {
+        throw new NotFoundRequestError("Product not found");
+      }
+
       if (existingProductIndex !== -1) {
         cartProducts[existingProductIndex].productQuantity +=
           product.productQuantity;
+
+        cartProducts[existingProductIndex].productPrice =
+          holderProduct.productPrice;
       } else {
-        cartProducts.push(product);
+        cartProducts.push(this.interfaceCartProduct(holderProduct, product));
       }
     }
+
     cartHolder.cartProducts = cartProducts;
+
     return await cartHolder.save();
   }
 
   static async deleteProductsCartUser({ products, cartUserId }) {
-    const query = { cartUserId };
+    const query = { cartUserId, cartStatus: "active" };
     const update = {
       $pull: {
         cartProducts: {
@@ -53,7 +90,7 @@ class CartService {
   static async getCartByUserId({ cartUserId }) {
     const cart = await CartModel.findOne({ cartUserId }).lean().exec();
     if (!cart) {
-      throw new NotFoundError("Cart not found");
+      throw new NotFoundRequestError("Cart not found");
     }
     return cart;
   }

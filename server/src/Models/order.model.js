@@ -1,6 +1,6 @@
 const DOCUMENT_NAME = "Order";
 const COLLECTION_NAME = "Orders";
-
+const { default: mongoose } = require("mongoose");
 const orderSchema = new mongoose.Schema(
   {
     orderItems: [
@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
     },
-    orderUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    orderUser: { type: mongoose.Schema.Types.ObjectId, ref: "Auth" },
     orderAddress: { type: mongoose.Schema.Types.ObjectId, ref: "Address" },
     orderPayment: { type: mongoose.Schema.Types.ObjectId, ref: "Payment" },
     orderInvoice: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice" },
