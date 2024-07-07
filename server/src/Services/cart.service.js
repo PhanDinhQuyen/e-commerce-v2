@@ -23,7 +23,6 @@ class CartService {
     for (const product of products) {
       // Iterate over the new products
       const existingProductIndex = cartProducts.findIndex((item) => {
-        console.log(["item", item.productId]);
         return item.productId.toString() === product.productId;
       });
 
