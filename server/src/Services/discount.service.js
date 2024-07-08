@@ -144,10 +144,11 @@ class DiscountService {
       discountType === "percentage"
         ? (totalPrice * discountValue) / 100
         : discountValue;
-
+    totalPrice += notDiscount;
     return {
-      totalPrice: totalPrice - amount + notDiscount,
-      discountCode,
+      totalOrder: totalPrice,
+      totalPrice: totalPrice - amount,
+      discount: amount,
     };
   }
 

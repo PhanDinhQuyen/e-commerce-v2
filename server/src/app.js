@@ -45,6 +45,7 @@ function main() {
   app.use("/v1/api/discount", require("./Routes/discount.route"));
   app.use("/v1/api/cart", require("./Routes/cart.route"));
   app.use("/v1/api/order", require("./Routes/order.route"));
+  app.use("/v1/api/checkout", require("./Routes/checkout.route"));
   //Test
   // app.get("/v1/api/test/add", (req, res) => {
   //   require("./Tests/add.product");

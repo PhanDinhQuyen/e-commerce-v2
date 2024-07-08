@@ -1,4 +1,5 @@
 const { BadRequestError } = require("../../Handlers/error.handler");
+const { isObjectId } = require("../../Utils");
 const { ProductModel } = require("../product.model");
 
 const queryProducts = async (
@@ -66,10 +67,32 @@ const updateProductById = async ({
 }) => {
   return await model.findByIdAndUpdate(_id, payload, { new: isNew, session });
 };
+
+const checkProductsServer = async (products, auth, isPublic = true) => {
+  return await Promise.all(
+    products.map(async (product) => {
+      const foundProduct = await queryProduct({
+        auth,
+        _id: isObjectId(product.productId),
+        isPublic,
+      });
+      if (!foundProduct) {
+        throw new BadRequestError("Checkout product error");
+      }
+      return {
+        productId: product.productId,
+        productPrice: foundProduct.productPrice,
+        productQuantity: product.productQuantity,
+      };
+    })
+  );
+};
+
 module.exports = {
   queryProducts,
   queryProduct,
   querySearchProducts,
   changePublicProductForShop,
   updateProductById,
+  checkProductsServer,
 };

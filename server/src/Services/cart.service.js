@@ -17,16 +17,8 @@ class CartService {
   };
 
   static async createUserCart({ data, cartUserId }) {
-    console.log(data);
     const query = { cartUserId };
-    const updateOrInsert = {
-      // $push: {
-      //   cartProducts: {
-      //     productShopId: data.productShopId,
-      //     products: data.products,
-      //   },
-      // },
-    };
+    const updateOrInsert = {};
     const options = { upsert: true, new: true };
 
     return await CartModel.findOneAndUpdate(query, updateOrInsert, options);
@@ -65,7 +57,6 @@ class CartService {
     const update = data[0].products[0];
     const shopId = data[0].productShopId;
 
-    console.log({ update, shopId });
     const foundProduct = await queryProduct({
       _id: isObjectId(update.productId),
       auth: isObjectId(shopId),
@@ -83,14 +74,11 @@ class CartService {
       const index = cartProducts[existIndex].products.findIndex(
         (product) => product.productId.toString() === update.productId
       );
-      console.log(index);
       if (index !== -1) {
         const quanlity =
           cartProducts[existIndex].products[index].productQuantity +
           update.productQuantity;
         if (quanlity === 0) {
-          console.log("RUN");
-
           cartProducts[existIndex].products.splice(index, 1);
         } else if (quanlity < 0) {
           throw new BadRequestError();
@@ -126,10 +114,6 @@ class CartService {
     for (const item of data) {
       const productShopId = item.productShopId;
       const products = item.products;
-
-      console.log("Data:", data);
-      console.log("productShopId:", productShopId);
-      console.log("products:", products);
 
       // Find the specific productShop
       const productShop = cart.cartProducts.find(
