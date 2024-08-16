@@ -71,12 +71,20 @@ class DiscountService {
     );
     return discounts;
   }
-  static async getDiscountAmount({ products, discountCode, authShop, auth }) {
+  static async getDiscountAmount({
+    products,
+    discountCode,
+    authShop,
+    auth,
+    discountId,
+  }) {
+    console.log(products, discountCode, authShop, auth, discountId);
     const discount = await foundDiscountCode({
       discountCode: discountCode,
       auth: authShop,
+      _id: isObjectId(discountId),
     });
-    if (!discount && !discount.discountStatus) {
+    if (!discount || !discount.discountStatus) {
       throw new NotFoundRequestError("Discount not found");
     }
     const {
@@ -120,7 +128,8 @@ class DiscountService {
       }
     } else {
       for (const product of products) {
-        totalPrice += product.price * product.quanlity;
+        console.log(totalPrice);
+        totalPrice += product.productPrice * product.productQuantity;
       }
     }
     if (totalPrice === 0) {
@@ -131,7 +140,7 @@ class DiscountService {
         "Order value should be more than minimum order value"
       );
     }
-
+    console.log({ totalPrice });
     await updateDiscountCode(
       { auth: authShop, discountCode },
       {

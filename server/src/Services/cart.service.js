@@ -133,6 +133,14 @@ class CartService {
 
     return await cart.save();
   }
+
+  static async getCartUser({ cartUserId }) {
+    const cart = await CartModel.findOne({ cartUserId });
+    if (!cart) {
+      throw new NotFoundRequestError("Cart not found");
+    }
+    return cart;
+  }
 }
 
 module.exports = CartService;

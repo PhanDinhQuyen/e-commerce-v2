@@ -23,6 +23,7 @@ class CheckoutService {
    * 
    * **/
   static async checkoutReview({ cartId, userId, data }) {
+    console.log(cartId, userId, data.orders);
     const cart = await findCartById(cartId);
     if (!cart) {
       throw new NotFoundRequestError("Cart not found");
@@ -39,12 +40,10 @@ class CheckoutService {
     for (const order of data.orders) {
       const { productShopId, shopDiscounts, products } = order;
       const newProducts = await checkProductsServer(products, productShopId);
-      const checkoutPrice = newProducts.reduceRight(
-        (acc, product) => acc + product.price * product.productQuantity,
+      const checkoutPrice = newProducts.reduce(
+        (acc, product) => acc + product.productPrice * product.productQuantity,
         0
       );
-
-      checkoutOrders.totalPrice += checkoutPrice;
 
       const itemsCheckout = {
         shopId: productShopId,
@@ -53,7 +52,6 @@ class CheckoutService {
         priceApplyDiscount: 0,
         products: newProducts,
       };
-
       if (itemsCheckout.shopDiscounts.length !== 0) {
         const { discount = 0, totalPrice = 0 } =
           await DiscountService.getDiscountAmount({
@@ -61,11 +59,16 @@ class CheckoutService {
             discountCode: itemsCheckout.shopDiscounts[0].discountCode,
             authShop: productShopId,
             auth: userId,
+            discountId: itemsCheckout.shopDiscounts[0].discountId,
           });
+        console.log(discount, totalPrice);
         if (discount > 0) {
           itemsCheckout.priceApplyDiscount += totalPrice;
           checkoutOrders.totalDiscount += discount;
         }
+      } else {
+        checkoutOrders.totalPrice = itemsCheckout.priceRaw;
+        checkoutOrders.totalCheckout = itemsCheckout.priceRaw;
       }
       checkoutOrders.totalCheckout += itemsCheckout.priceApplyDiscount;
       orders.push(itemsCheckout);
