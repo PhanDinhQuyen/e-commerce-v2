@@ -98,6 +98,47 @@ const unSelectData = (arr) =>
     return { [item]: -1 };
   });
 
+const customArgumentsToken = "__ES6-PROMISIFY--CUSTOM-ARGUMENTS__";
+function promisify(fn) {
+  if (typeof fn !== "function") {
+    throw new TypeError("Argument to promisify must be a function");
+  }
+  const customArgs = fn[customArgumentsToken];
+  const PromiseConstructor = promisify.Promise || Promise;
+
+  if (typeof PromiseConstructor !== "function") {
+    throw new Error("No Promise implementation found; do you need a polyfill?");
+  }
+
+  return function (...args) {
+    return new PromiseConstructor((resolve, reject) => {
+      args.push(function (err, ...callbackArgs) {
+        if (err) {
+          return reject(err);
+        }
+
+        if (callbackArgs.length === 1 || !customArgs) {
+          return resolve(callbackArgs[0]);
+        }
+
+        const result = {};
+        callbackArgs.forEach((value, index) => {
+          const key = customArgs[index];
+          if (key) {
+            result[key] = value;
+          }
+        });
+
+        resolve(result);
+      });
+
+      fn.apply(this, args);
+    });
+  };
+}
+promisify.argumentNames = customArgumentsToken;
+promisify.Promise = undefined;
+
 module.exports = {
   handlerCatchError,
   isObjectId,
@@ -106,4 +147,5 @@ module.exports = {
   updateNestedObjectParse,
   isObjectEmpty,
   unSelectData,
+  promisify,
 };

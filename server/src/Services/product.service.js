@@ -15,6 +15,7 @@ const {
 } = require("../Models/Repositories/product.repo");
 const { isObjectId } = require("../Utils");
 const InventoryModel = require("../Models/inventory.model");
+const { insertInventory } = require("../Models/Repositories/inventory.reqo");
 
 /**
  * Service class (Factory parttent) for creating different types of products
@@ -147,7 +148,7 @@ class Product {
   async create(_id) {
     const product = await ProductModel.create({ ...this, _id });
     if (product) {
-      await InventoryModel.create({
+      await insertInventory({
         inventoryProductId: _id,
         inventoryAuth: this.auth,
         inventoryStock: this.productQuantity,

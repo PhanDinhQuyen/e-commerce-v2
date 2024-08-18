@@ -14,7 +14,7 @@ const validateDiscountPayload = require("../Middlewares/discount.mid");
 const { isObjectId } = require("../Utils");
 class DiscountService {
   static createDiscountCode = async (payload) => {
-    await validateDiscountPayload(payload);
+    validateDiscountPayload(payload);
 
     const holderDiscount = await foundDiscountCode(payload);
 
@@ -46,27 +46,19 @@ class DiscountService {
     }
 
     const { discountAppliesTo, discountProducts } = discount;
-    let products;
+    let products = [];
     if (discountAppliesTo === "all") {
-      //get all products with shop id
-
       products = await queryProducts(
         { auth: auth, isPublic: true },
         { p: page }
       );
-    }
-    if (discountAppliesTo === "specified") {
-      console.log("products");
+    } else {
       products = await queryProducts(
-        {
-          auth: auth,
-          _id: { $in: discountProducts },
-          isPublic: true,
-        },
+        { auth: auth, _id: { $in: discountProducts }, isPublic: true },
         { p: page }
       );
     }
-    return products || [];
+    return products;
   }
   static async getAllDiscountCodesByShop({ auth, page }) {
     const discounts = await queryAllDiscountCodesWithShop(
@@ -82,7 +74,6 @@ class DiscountService {
     auth,
     discountId,
   }) {
-    console.log(products, discountCode, authShop, auth, discountId);
     const discount = await foundDiscountCode({
       discountCode: discountCode,
       auth: authShop,
@@ -144,7 +135,6 @@ class DiscountService {
         "Order value should be more than minimum order value"
       );
     }
-    console.log({ totalPrice });
     await updateDiscountCode(
       { auth: authShop, discountCode },
       {
@@ -152,11 +142,11 @@ class DiscountService {
         $push: { discountUsersUsed: isObjectId(auth) },
       }
     );
+    let amount = discountValue;
+    if (discountType === "percentage") {
+      amount = (totalPrice * discountValue) / 100;
+    }
 
-    const amount =
-      discountType === "percentage"
-        ? (totalPrice * discountValue) / 100
-        : discountValue;
     totalPrice += notDiscount;
     return {
       totalOrder: totalPrice,
@@ -188,8 +178,6 @@ class DiscountService {
     );
     return discount;
   }
-
-  static async updateDiscount() {}
 }
 
 module.exports = DiscountService;

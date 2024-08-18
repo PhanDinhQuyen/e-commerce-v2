@@ -61,7 +61,6 @@ class CheckoutService {
             auth: userId,
             discountId: itemsCheckout.shopDiscounts[0].discountId,
           });
-        console.log(discount, totalPrice);
         if (discount > 0) {
           itemsCheckout.priceApplyDiscount += totalPrice;
           checkoutOrders.totalDiscount += discount;
@@ -74,9 +73,23 @@ class CheckoutService {
       orders.push(itemsCheckout);
     }
     return {
+      data,
       checkoutOrders,
       orders,
     };
+  }
+
+  static async orderByUser({ data, cartId, userId, userAddress, userPayment }) {
+    const { checkoutOrders, orders } = await this.checkoutReview({
+      cartId,
+      userId,
+      data,
+    });
+
+    const allProducts = orders.flatMap((order) => order.products);
+
+    for (const product of allProducts) {
+    }
   }
 }
 
