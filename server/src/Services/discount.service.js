@@ -41,6 +41,10 @@ class DiscountService {
       throw new BadRequestError("Discount is not available");
     }
 
+    if (new Date(discount.discountEndDate) < new Date()) {
+      throw new BadRequestError("Discount has expired");
+    }
+
     const { discountAppliesTo, discountProducts } = discount;
     let products;
     if (discountAppliesTo === "all") {
