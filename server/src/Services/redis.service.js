@@ -1,4 +1,7 @@
 const { promisify } = require("../Utils");
+const {
+  reservationInventory,
+} = require("../Models/Repositories/inventory.reqo");
 
 const redis = require("redis");
 
@@ -16,7 +19,17 @@ const acquiredLock = async (productId, quantity, cartId) => {
     const result = await setNX(key, expireTime);
     //  0 or 1
     if (Boolean(result)) {
-      return key;
+      const { modifiedCount: isReservation } = await reservationInventory({
+        productId,
+        quantity,
+        cartId,
+      });
+      // 0 or 1
+      if (isReservation) {
+        await pExpire(key, expireTime);
+        return key;
+      }
+      return null;
     } else {
       await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
@@ -26,3 +39,5 @@ const acquiredLock = async (productId, quantity, cartId) => {
 const releaseLock = async (lockKey) => {
   return await delKey(lockKey);
 };
+
+module.exports = { acquiredLock, releaseLock };

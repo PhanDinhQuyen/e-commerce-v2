@@ -1,7 +1,12 @@
-const { NotFoundRequestError } = require("../Handlers/error.handler");
+const {
+  NotFoundRequestError,
+  BadRequestError,
+} = require("../Handlers/error.handler");
+const OrderModel = require("../Models/order.model");
 const { findCartById } = require("../Models/Repositories/cart.repo");
 const { checkProductsServer } = require("../Models/Repositories/product.repo");
 const DiscountService = require("./discount.service");
+const { acquiredLock, releaseLock } = require("./redis.service");
 
 class CheckoutService {
   /** 
@@ -88,8 +93,31 @@ class CheckoutService {
 
     const allProducts = orders.flatMap((order) => order.products);
 
+    const acquiredProducts = [];
+
     for (const product of allProducts) {
+      const { productId, productQuantity } = product;
+      const keyLock = await acquiredLock(productId, productQuantity, cartId);
+      acquiredProducts.push(keyLock ? true : false);
+      if (keyLock) {
+        await releaseLock(keyLock);
+      }
     }
+
+    if (acquiredProducts.includes(false)) {
+      throw new BadRequestError(
+        "Some products have already been, please try again"
+      );
+    }
+
+    const newOrder = await OrderModel.create({
+      orderCheckOut: checkoutOrders,
+      orderAddress: userAddress,
+      orderPayment: userPayment,
+      orderUser: userId,
+      orderItems: orders,
+    });
+    return newOrder;
   }
 }
 
