@@ -2,12 +2,15 @@ const {
   CreateResponse,
   SuccessResponse,
 } = require("../Handlers/success.handler");
-
+const validateCreateProduct = require("../Middlewares/product.mid");
 const ProductService = require("../Services/product.service");
 class ProductController {
   static createProduct = async (req, res) =>
     new CreateResponse(
-      await ProductService.createProduct({ ...req.body, auth: req.auth })
+      await ProductService.createProduct({
+        ...validateCreateProduct(req.body),
+        auth: req.auth,
+      })
     ).create(res);
 
   static getProductsforShop = async (req, res) =>

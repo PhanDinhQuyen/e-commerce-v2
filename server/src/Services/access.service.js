@@ -54,6 +54,7 @@ class AccessService {
    * @throws {BadRequestError} - If the email is not found or the password is invalid.
    */
   static signIn = async ({ email, password }) => {
+    console.log({ email, password });
     const user = await AuthModel.findOne({ email }).lean();
 
     if (!user) {
