@@ -10,12 +10,9 @@ const {
 } = require("../Models/Repositories/discount.repo");
 const { queryProducts } = require("../Models/Repositories/product.repo");
 const DiscountModel = require("../Models/discount.model");
-const validateDiscountPayload = require("../Middlewares/discount.mid");
 const { isObjectId } = require("../Utils");
 class DiscountService {
   static createDiscountCode = async (payload) => {
-    validateDiscountPayload(payload);
-
     const holderDiscount = await foundDiscountCode(payload);
 
     if (holderDiscount && holderDiscount.discountStatus) {

@@ -3,11 +3,14 @@ const {
   SuccessResponse,
 } = require("../Handlers/success.handler");
 const DiscountService = require("../Services/discount.service");
-
+const validateDiscount = require("../Middlewares/discount.mid");
 class DiscountController {
   static createDiscountCode = async (req, res) =>
     new CreateResponse(
-      await DiscountService.createDiscountCode({ ...req.body, auth: req.auth })
+      await DiscountService.createDiscountCode({
+        ...validateDiscount(req.body),
+        auth: req.auth,
+      })
     ).create(res);
 
   static getAllProductShopWithDiscount = async (req, res) =>
