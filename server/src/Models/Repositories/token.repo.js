@@ -4,9 +4,16 @@ const getPublicKeyWithAuth = async (auth) =>
   await TokenV2Model.findOne({ auth }).lean().exec();
 
 const storageToken = async (filter, update, options) =>
-  await TokenV2Model.findOneAndUpdate(filter, update, options).lean().exec();
+  await TokenV2Model.findOneAndUpdate(filter, update, options);
 
 const removeTokenWithAuth = async (auth) =>
   await TokenV2Model.findOneAndDelete({ auth }).lean().exec();
+const getTokenWithAuth = async (auth) =>
+  await TokenV2Model.findOne({ auth }).lean().exec();
 
-module.exports = { getPublicKeyWithAuth, storageToken, removeTokenWithAuth };
+module.exports = {
+  getPublicKeyWithAuth,
+  storageToken,
+  removeTokenWithAuth,
+  getTokenWithAuth,
+};

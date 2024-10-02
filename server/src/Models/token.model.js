@@ -46,6 +46,6 @@ const tokenSchema = new mongoose.Schema(
  *
  * @type {import('mongoose').Model<TokenSchema>}
  */
-const TokenModel = mongoose.model(DOCUMENT_NAME, tokenSchema);
+// const TokenModel = mongoose.model(DOCUMENT_NAME, tokenSchema);
 
-module.exports = TokenModel;
+// module.exports = TokenModel;

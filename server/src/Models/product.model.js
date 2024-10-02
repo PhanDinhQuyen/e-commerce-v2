@@ -7,7 +7,13 @@ const DOCUMENT_REF = "Auth";
 
 const productSchema = new mongoose.Schema(
   {
-    productName: String,
+    productName: {
+      type: String,
+      required: true,
+      trim: true,
+      min: 3,
+      max: 30,
+    },
     productSlug: String,
     productThumb: String,
 
@@ -38,7 +44,7 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
       index: true,
-      // select: false,
+      select: false,
     },
     auth: {
       type: mongoose.Schema.Types.ObjectId,

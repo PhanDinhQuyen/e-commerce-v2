@@ -4,6 +4,7 @@ const {
   getPublicKeyWithAuth,
   storageToken,
   removeTokenWithAuth,
+  getTokenWithAuth,
 } = require("../Models/Repositories/token.repo");
 const {
   BadRequestError,
@@ -11,7 +12,7 @@ const {
 } = require("../Handlers/error.handler");
 const createKeysPairSync = () =>
   crypto.generateKeyPairSync("rsa", {
-    modulesLength: 4096,
+    modulusLength: 4096,
     publicKeyEncoding: {
       type: "pkcs1",
       format: "pem",
@@ -23,27 +24,32 @@ const createKeysPairSync = () =>
   });
 
 class TokenV2Service {
-  static createTokensPair = async (payload) => {
+  static async createTokensPair(payload) {
     const { publicKey, privateKey } = createKeysPairSync();
     const publicKeyString = publicKey.toString();
     const filter = { auth: payload.auth };
     const update = { publicKey: publicKeyString };
     const options = { new: true, upsert: true };
-
-    const holderToken = await storageToken({ filter, update, options });
+    console.log("Filter:", filter);
+    console.log("Update:", update);
+    console.log("Options:", options);
+    await storageToken(filter, update, options);
+    const holderToken = await getTokenWithAuth(filter.auth);
+    console.log(holderToken);
     if (!holderToken) {
       throw new BadRequestError("Failed to create token for user");
+      ``;
     }
     const accessToken = jwt.sign(payload, privateKey, {
       expiresIn: "1h",
       algorithm: "RS256",
     });
-    const refreshToken = jwt.sign(payload, publicKey, {
+    const refreshToken = jwt.sign(payload, privateKey, {
       expiresIn: "7d",
       algorithm: "RS256",
     });
     return { accessToken, refreshToken };
-  };
+  }
 
   static decodeToken = async (auth, token) => {
     const publicKeyString = await getPublicKeyWithAuth(auth);
@@ -67,7 +73,7 @@ class TokenV2Service {
       },
     };
     const options = { new: true };
-    const holderToken = await storageToken({ filter, update, options });
+    const holderToken = await storageToken(filter, update, options);
     if (!holderToken) {
       throw new BadRequestError("Failed to add refresh token to user");
     }

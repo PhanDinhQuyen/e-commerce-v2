@@ -7,6 +7,7 @@ const {
 } = require("../Handlers/error.handler");
 const TokenService = require("./token.service");
 const { selectDataIntoObject } = require("../Utils");
+const TokenV2Service = require("./token.v2.service");
 
 /**
  * Service class for user-related operations.
@@ -69,7 +70,7 @@ class AccessService {
 
     const auth = user._id;
     const payload = { auth, email: user.email, role: user.role };
-    const tokens = await TokenService.createTokensPair(auth, payload);
+    const tokens = await TokenV2Service.createTokensPair(payload);
 
     if (!tokens) {
       throw new BadRequestError("Error creating tokens");

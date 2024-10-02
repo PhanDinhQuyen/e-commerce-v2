@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 
-const DOCUMENT_NAME = "Token";
-const COLLECTION_NAME = "Tokens";
+const DOCUMENT_NAME = "TokenV2";
+const COLLECTION_NAME = "TokenV2s";
 const DOCUMENT_REF = "Auth";
 
 /**
